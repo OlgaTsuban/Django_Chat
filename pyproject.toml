@@ -13,6 +13,13 @@ psycopg2-binary = "^2.9.9"
 djangorestframework = "^3.14.0"
 
 
+[tool.poetry.group.images.dependencies]
+pillow = "^10.2.0"
+
+
+[tool.poetry.group.test.dependencies]
+requests = "^2.31.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

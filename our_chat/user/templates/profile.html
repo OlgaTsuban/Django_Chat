@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>Profile Information</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">User Profile</h5>
+            <img src="{{ avatar.url }}" alt="Image">
+            <p class="card-text">Name: {{ username }}</p>
+            <p class="card-text">Email: {{ email }}</p>
+            <p class="card-text">Bio: {{bio}}</p>
+            <!-- Add more profile information here -->
+        </div>
+    </div>
+{% endblock %}
+

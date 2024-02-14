@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
+from .models import Profile
 
 # Use the class for registration
 class UserRegistrationSerializer(serializers.ModelSerializer):
@@ -38,3 +39,9 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Must include 'email' and 'password'.")
 
         return data
+
+# Use the class for create/update profile
+class ProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ('user', 'name','bio', 'avatar')
