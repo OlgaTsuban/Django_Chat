@@ -1,0 +1,23 @@
+.friend-box {
+  border: 1px solid #5590d3;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center; /* Vertically center content */
+  text-align: center;
+}
+
+.friend-box img {
+  max-width: 100px; /* Adjust as needed */
+  height: auto;
+  /*display: block;*/
+  margin-right: 10px; /* Center the image */
+}
+
+.friend-box a {
+  margin: 5; /* Remove default margin for paragraphs */
+  flex-grow: 1; /* Grow to fill available space */
+}
+
+  

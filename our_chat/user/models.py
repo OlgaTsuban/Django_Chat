@@ -24,7 +24,7 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
-    
+
 # represents the Profile object
 class Profile(models.Model):
     user = models.OneToOneField(
@@ -34,7 +34,10 @@ class Profile(models.Model):
     )
     name = models.CharField(max_length=200)
     bio = models.TextField(max_length=500, blank=True)
-    avatar = models.ImageField(upload_to="images/profile/", blank=True)
+    avatar = models.ImageField(upload_to="images/profile/",
+                               default="images/profile/default.png",
+                               blank=True)
+    friends = models.ManyToManyField('Friend', related_name="my_friends")
 
     def save(self, *args, **kwargs):
         super().save()
@@ -46,3 +49,7 @@ class Profile(models.Model):
     def __str__(self):
         return self.name
 
+# represents the Friend object
+class Friend(models.Model):
+    profile_one = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="friendships_one", default=None)
+    profile_two = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name="friendships_two", default=None)

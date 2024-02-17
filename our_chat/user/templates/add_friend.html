@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container mt-3">
+    <h2>Add Friend</h2>
+    <form method="post">
+        {% csrf_token %}
+        
+        <label for="user_email">Email:</label>
+        <input type="text" id="user_email" name="user_email"><br><br>
+        <button type="submit">Add Friend</button>
+    </form>
+
+{% endblock %}
+

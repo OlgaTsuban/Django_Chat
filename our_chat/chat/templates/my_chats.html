@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}All Quotes{% endblock %}
+
+{% block content %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'chat/all_chats.css' %}">
+
+<div class="container mt-3">
+    <h2>All Friends</h2>
+
+    {% for friend in friends %}
+    <div class="friend-box">
+        <img src="{{ friend.profile_two.avatar.url }}" alt="Image">
+        <a href="{% url 'chat:chat-with' friend.profile_two.user.id %}">
+            {{ friend.profile_two.user.username }}
+        </a>
+        
+    </div>    
+    {% endfor %}
+        
+    
+</div>
+{% endblock %}

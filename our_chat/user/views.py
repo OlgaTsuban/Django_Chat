@@ -5,7 +5,7 @@ from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework import status
 
-from .models import Profile
+from .models import Profile, Friend
 from .serializers import UserRegistrationSerializer, UserLoginSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
@@ -18,6 +18,8 @@ from rest_framework.exceptions import NotFound
 from rest_framework.renderers import TemplateHTMLRenderer
 from django.shortcuts import render, redirect
 from .forms import LoginForm, UpdateProfileForm
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 
 # Use this class for Registration
 class UserRegistrationView(generics.CreateAPIView):
@@ -163,3 +165,33 @@ class ProfileUpdateView(APIView):
             profile_form.save()
             messages.success(request, 'Your profile is updated successfully')
             return redirect(to='user:profile')
+        
+
+class AddFriendView(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'add_friend.html'
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, *args, **kwargs):
+        # Handle GET request logic here (e.g., render a registration form)
+        return Response({"message": "Add Friend"}, status=status.HTTP_200_OK)
+    def post(self, request):
+        user_email = request.POST.get('user_email')
+        try:
+            user = User.objects.get(email=user_email)
+        except User.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+        friend_profile = get_object_or_404(Profile, user=user)
+        user_profile = get_object_or_404(Profile, user=request.user)
+        # Check if the friendship already exists
+        if Friend.objects.filter(profile_one=user_profile, profile_two=friend_profile).exists() or \
+           Friend.objects.filter(profile_one=friend_profile, profile_two=user_profile).exists():
+            return Response({"error": "Friendship already exists"}, status=status.HTTP_400_BAD_REQUEST)
+        # Create a new friendship
+        friend1 = Friend(profile_one=user_profile, profile_two=friend_profile)
+        friend2 = Friend(profile_one=friend_profile, profile_two=user_profile)
+        friend1.save()
+        friend2.save()
+
+        return Response({"message": "Friend added successfully"}, status=status.HTTP_201_CREATED)
